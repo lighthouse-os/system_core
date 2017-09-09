@@ -368,11 +368,14 @@ void BatteryMonitor::updateValues(void) {
             int ChargingVoltage =
                   (access(SYSFS_BATTERY_VOLTAGE, R_OK) == 0) ? getIntField(String8(SYSFS_BATTERY_VOLTAGE)) :
                    DEFAULT_VBUS_VOLTAGE;
+<<<<<<< HEAD
 
             // there are devices that have the file but with a value of 0
             if (ChargingVoltage == 0) {
                 ChargingVoltage = DEFAULT_VBUS_VOLTAGE;
             }
+=======
+>>>>>>> e656e6f8c (LockscreenCharging: squashed (2/3))
 
             double power = ((double)ChargingCurrent / MILLION) *
                            ((double)ChargingVoltage / MILLION);
