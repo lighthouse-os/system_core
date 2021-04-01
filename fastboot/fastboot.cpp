@@ -1002,7 +1002,7 @@ static void copy_boot_avb_footer(const std::string& partition, struct fastboot_b
 
     std::string partition_size_str;
     if (fb->GetVar("partition-size:" + partition, &partition_size_str) != fastboot::SUCCESS) {
-        die("cannot get boot partition size");
+        die("cannot get partition size for %s", partition.c_str());
     }
 
     partition_size_str = fb_fix_numeric_var(partition_size_str);
@@ -1086,6 +1086,7 @@ static void flash_buf(const std::string& partition, struct fastboot_buffer *buf)
 static std::string get_current_slot() {
     std::string current_slot;
     if (fb->GetVar("current-slot", &current_slot) != fastboot::SUCCESS) return "";
+    if (current_slot[0] == '_') current_slot.erase(0, 1);
     return current_slot;
 }
 
@@ -1935,6 +1936,7 @@ int FastBootTool::Main(int argc, char* argv[]) {
             if (slot_override == "") {
                 std::string current_slot;
                 if (fb->GetVar("current-slot", &current_slot) == fastboot::SUCCESS) {
+                    if (current_slot[0] == '_') current_slot.erase(0, 1);
                     next_active = verify_slot(current_slot, false);
                 } else {
                     wants_set_active = false;
